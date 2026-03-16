@@ -187,7 +187,7 @@
         @media (max-width: 1200px) { #tool-prediksi .main-layout { grid-template-columns: 1fr; } }
 
         /* =========================================
-           TOOL 4: SYAIR SHIO STYLES
+           TOOL 4: SYAIR SHIO STYLES (UPDATED)
            ========================================= */
         #tool-syair {
             font-family: 'Poppins', sans-serif;
@@ -266,7 +266,42 @@
         #tool-syair .extra-cards .card { text-align: center; padding: 12px 15px; min-width: 80px; }
         #tool-syair .extra-cards h3 { margin: 0; font-size: 16px; text-shadow: 0 0 8px var(--elegant-gold); color: var(--elegant-gold); }
         #tool-syair .extra-cards p { margin: 6px 0 0 0; font-size: 14px; font-weight: bold; color: #ffdd88; }
-        #tool-syair .footer-card { padding: 15px; text-align: center; font-size: 14px; font-weight: 600; color: #ffdd88; line-height: 1.4; }
+        
+        /* Updated Footer Card for Pantun */
+        #tool-syair .footer-card { padding: 20px; text-align: center; font-size: 14px; font-weight: 600; color: #ffdd88; line-height: 1.4; }
+        #tool-syair .pantun-text {
+            font-style: italic;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #fff;
+            margin-bottom: 15px;
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(245, 197, 66, 0.2);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #tool-syair .btn-ganti-pantun {
+            background: linear-gradient(145deg, #333, #111);
+            color: var(--elegant-gold);
+            border: 1px solid var(--elegant-gold);
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        #tool-syair .btn-ganti-pantun:hover {
+            background: var(--elegant-gold);
+            color: #000;
+            box-shadow: 0 0 10px rgba(245, 197, 66, 0.5);
+        }
+
         #tool-syair .link-CITAWIN-outside { margin-top: 15px; font-size: 18px; font-weight: bold; color: var(--elegant-gold); text-align: center; text-shadow: 0 0 10px var(--elegant-gold); letter-spacing: 1px; padding: 10px; background: linear-gradient(45deg, rgba(245, 197, 66, 0.2), rgba(102, 85, 0, 0.2)); border-radius: 8px; border: 1px solid var(--elegant-gold); text-decoration: none; display: block; }
         #tool-syair .locations-card { margin-top: 15px; padding: 15px; text-align: center; }
         #tool-syair .locations-card h3 { margin: 0 0 10px 0; font-size: 16px; text-shadow: 0 0 8px var(--elegant-gold); color: var(--elegant-gold); }
@@ -779,7 +814,7 @@
     </div>
 
     <!-- =========================================
-         TOOL 4: SYAIR SHIO
+         TOOL 4: SYAIR SHIO (UPDATED WITH PANTUN)
          ========================================= -->
     <div id="tool-syair" class="tool-container active">
         <div class="control-panel">
@@ -829,7 +864,14 @@
             </div>
           </div>
 
-          <div class="footer-card" id="syair_footer"></div>
+          <div class="footer-card" id="syair_footer">
+             <div style="margin-bottom: 10px; font-weight: bold; color: var(--elegant-gold);">Syair Kemenangan Hari Ini:</div>
+             <div class="pantun-text" id="syair_pantunDisplay">
+                <!-- Pantun will be loaded here -->
+             </div>
+             <button class="btn-ganti-pantun" onclick="changePantun()"><i class="fas fa-sync-alt"></i> Ganti Syair</button>
+          </div>
+          
           <a href="https://heylink.me/citawin" class="link-CITAWIN-outside" id="syair_targetLink">https://heylink.me/citawin</a>
           
           <div class="locations-card">
@@ -1052,7 +1094,7 @@
         // TOOL 3: PREDIKSI
         // =========================================
         function initPrediksi() { const t = new Date(); const tm = new Date(t); tm.setDate(t.getDate() + 1); const d = t.toLocaleDateString('id-ID', { day: 'numeric', month: 'long' }) + ' - ' + tm.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); document.getElementById('pred_dateDisplay').innerText = d; document.getElementById('pred_previewDate').innerText = d; document.getElementById('pred_inputText').addEventListener('input', generatePrediksiHTML); }
-        function generatePrediksiHTML() { const i = document.getElementById('pred_inputText').value.trim(); if (!i) return; const l = i.split('\n').filter(ln => ln.trim() !== ''); let tr = '', pr = '', cl = '', mt = [], tl = 0, tm = 0; for (let x = 0; x < l.length; x++) { let ln = l[x].trim(); const md = parseMatchLine(ln); if (!md) { if (cl && mt.length > 0) { tr += genTbl(cl, mt); pr += genPrev(cl, mt); tl++; tm += mt.length; } cl = ln; mt = []; } else mt.push(md); } if (cl && mt.length > 0) { tr += genTbl(cl, mt); pr += genPrev(cl, mt); tl++; tm += mt.length; } document.getElementById('pred_totalLeagues').textContent = tl; document.getElementById('pred_totalMatches').textContent = tm; document.getElementById('pred_outputCode').textContent = genFull(tr); document.getElementById('pred_previewContent').innerHTML = pr || '<div style="color:#fff; text-align:center;">Format salah</div>'; }
+        function generatePrediksiHTML() { const i = document.getElementById('pred_inputText').value.trim(); if (!i) return; const l = i.split('\n').filter(ln => ln.trim() !== ''); let tr = '', pr = '', cl = '', mt = [], tl = 0, tmc = 0; for (let x = 0; x < l.length; x++) { let ln = l[x].trim(); const md = parseMatchLine(ln); if (!md) { if (cl && mt.length > 0) { tr += genTbl(cl, mt); pr += genPrev(cl, mt); tl++; tmc += mt.length; } cl = ln; mt = []; } else mt.push(md); } if (cl && mt.length > 0) { tr += genTbl(cl, mt); pr += genPrev(cl, mt); tl++; tmc += mt.length; } document.getElementById('pred_totalLeagues').textContent = tl; document.getElementById('pred_totalMatches').textContent = tmc; document.getElementById('pred_outputCode').textContent = genFull(tr); document.getElementById('pred_previewContent').innerHTML = pr || '<div style="color:#fff; text-align:center;">Format salah</div>'; }
         function parseMatchLine(l) { const h = /\d{1,2}[\/\-]\d{1,2}|\d{1,2}:\d{2}/.test(l); const s = /\s+(vs|VS|Vs|vS)\s+/i.test(l); const sc = /\d+\s*[:]\s*\d+/.test(l); if (!h && !s && !sc) return null; let d = '', t = '', t1 = '', t2 = '', s1 = '', s2 = ''; const dtm = l.match(/(\d{1,2}[\/\-]\d{1,2})\s+(\d{1,2}:\d{2}(?:\s+WIB)?)/); if (dtm) { d = dtm[1]; t = dtm[2]; l = l.replace(dtm[0], '').trim(); } const scm = l.match(/(\d+)\s*[:]\s*(\d+)\s*$/); if (scm) { s1 = scm[1]; s2 = scm[2]; l = l.replace(scm[0], '').trim(); } const tmch = l.match(/(.+?)\s+(vs|VS|Vs|vS)\s+(.+?)$/i); if (tmch) { t1 = tmch[1].trim(); t2 = tmch[3].trim(); } if (t1 && t2 && s1 !== '' && s2 !== '') return { date: d || '-', time: t || '-', team1: t1, team2: t2, score1: s1, score2: s2 }; return null; }
         function genTbl(l, m) { let h = `<div style="border:3px solid #f5c542;border-radius:15px;padding:5px;margin:20px auto;width:90%;background:rgba(0,0,0,0.5);box-shadow:0 0 20px #f5c54280;"><table style="width:100%;border-collapse:collapse;"><tbody><tr><th colspan="3" style="background:linear-gradient(135deg,#000,#f5c542);color:#fff;padding:15px;text-transform:uppercase;">🏆 ${l}</th></tr><tr><th style="width:20%;background:#f5c542;color:#000;padding:10px;">Waktu</th><th style="width:60%;background:#f5c542;color:#000;padding:10px;">Pertandingan</th><th style="width:20%;background:#f5c542;color:#000;padding:10px;">Skor</th></tr>`; m.forEach(x => { h += `<tr style="background:#1a1a1a;color:#fff;"><td style="padding:10px;">${x.date}<br>${x.time}</td><td style="padding:10px;">${x.team1} VS ${x.team2}</td><td style="padding:10px;font-weight:bold;color:#f5c542;">${x.score1} : ${x.score2}</td></tr>`; }); h += `</tbody></table></div>`; return h; }
         function genPrev(l, m) { let h = `<div style="border:2px solid #f5c542;border-radius:10px;margin-top:15px;overflow:hidden;"><div style="background:#f5c542;color:#000;padding:10px;font-weight:bold;text-align:center;">🏆 ${l}</div><table style="width:100%;border-collapse:collapse;font-size:12px;"><tr style="background:#333;color:#fff;"><th style="padding:8px;">Waktu</th><th style="padding:8px;">Match</th><th style="padding:8px;">Skor</th></tr>`; m.forEach(x => { h += `<tr style="background:#000;color:#fff;border-bottom:1px solid #333;"><td style="padding:8px;">${x.date}<br>${x.time}</td><td style="padding:8px;">${x.team1} VS ${x.team2}</td><td style="padding:8px;color:#f5c542;">${x.score1} : ${x.score2}</td></tr>`; }); h += `</table></div>`; return h; }
@@ -1061,46 +1103,102 @@
         function copyPrediksi() { navigator.clipboard.writeText(document.getElementById('pred_outputCode').textContent).then(() => showNotification('HTML Disalin!')); }
 
         // =========================================
-        // TOOL 4: SYAIR
+        // TOOL 4: SYAIR (UPDATED WITH PANTUN LOGIC)
         // =========================================
-        let sInt; const sd = [{n:'ULAR',u:'https://i.imgur.com/xvEIxOe.png',a:["02","14","26","38","50","62","74","86","98"]},{n:'NAGA',u:'https://i.imgur.com/E5gxRuY.png',a:["03","15","27","39","51","63","75","87","99"]},{n:'KELINCI',u:'https://i.imgur.com/VPwhArL.png',a:["04","16","28","40","52","64","76","88","00"]},{n:'HARIMAU',u:'https://i.imgur.com/LFmqEIL.png',a:["05","17","29","41","53","65","77","89"]},{n:'KERBAU',u:'https://i.postimg.cc/SxPTQGcw/17deabf0d02c1a1ef05e0d92fc47b53b-Photoroom.png',a:["06","18","30","42","54","66","78","90"]},{n:'TIKUS',u:'https://i.postimg.cc/VLLDjhRh/572ef90cf873cf0bae134fb10b9e9ce6-Photoroom.png',a:["07","19","31","43","55","67","79","91"]},{n:'BAB I',u:'https://i.postimg.cc/0Q0bncnq/988651d0fb546b5ed57fa5813fce79de-Photoroom.png',a:["08","20","32","44","56","68","80","92"]},{n:'ANJING',u:'https://i.postimg.cc/DZ6wLmfK/26edd62a40024a37605788aa04330308-Photoroom.png',a:["09","21","33","45","57","69","81","93"]},{n:'AYAM',u:'https://i.postimg.cc/BvcSftKP/ebe301829765054ef33f8416cf6e1685-Photoroom.png',a:["10","22","34","46","58","70","82","94"]},{n:'MONYET',u:'https://i.postimg.cc/vmHYMbLK/c2364d161855434c28e5015e412ac631-Photoroom.png',a:["11","23","35","47","59","71","83","95"]},{n:'KAMBING',u:'https://i.postimg.cc/tJhQWMNW/25cba09984349edc203468f9d062bb77-Photoroom.png',a:["12","24","36","48","60","72","84","96"]},{n:'KUDA',u:'https://i.postimg.cc/MKDgwRs5/49858cc15abf0f6cb87d5acf1df06753-Photoroom.png',a:["01","13","25","37","49","61","73","85","97"]}];
-        function initSyair() { const t = new Date(); document.getElementById('syair_currentDate').innerText = t.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); document.getElementById("syair_footer").innerHTML = [`Rajin-rajinlah beribadah<br>Jangan lupa salat`,'Dalam malam yang kelam'][Math.floor(Math.random()*2)]; document.getElementById('syair_locationsList').innerHTML = `<span>${['POIPET','NEVADA','BRUNEI'][Math.floor(Math.random()*3)]}</span>`; if(sInt) clearInterval(sInt); sInt = setInterval(randS, 1000); randShio(); }
+        let sInt; 
+        const sd = [{n:'ULAR',u:'https://i.imgur.com/xvEIxOe.png',a:["02","14","26","38","50","62","74","86","98"]},{n:'NAGA',u:'https://i.imgur.com/E5gxRuY.png',a:["03","15","27","39","51","63","75","87","99"]},{n:'KELINCI',u:'https://i.imgur.com/VPwhArL.png',a:["04","16","28","40","52","64","76","88","00"]},{n:'HARIMAU',u:'https://i.imgur.com/LFmqEIL.png',a:["05","17","29","41","53","65","77","89"]},{n:'KERBAU',u:'https://i.postimg.cc/SxPTQGcw/17deabf0d02c1a1ef05e0d92fc47b53b-Photoroom.png',a:["06","18","30","42","54","66","78","90"]},{n:'TIKUS',u:'https://i.postimg.cc/VLLDjhRh/572ef90cf873cf0bae134fb10b9e9ce6-Photoroom.png',a:["07","19","31","43","55","67","79","91"]},{n:'BAB I',u:'https://i.postimg.cc/0Q0bncnq/988651d0fb546b5ed57fa5813fce79de-Photoroom.png',a:["08","20","32","44","56","68","80","92"]},{n:'ANJING',u:'https://i.postimg.cc/DZ6wLmfK/26edd62a40024a37605788aa04330308-Photoroom.png',a:["09","21","33","45","57","69","81","93"]},{n:'AYAM',u:'https://i.postimg.cc/BvcSftKP/ebe301829765054ef33f8416cf6e1685-Photoroom.png',a:["10","22","34","46","58","70","82","94"]},{n:'MONYET',u:'https://i.postimg.cc/vmHYMbLK/c2364d161855434c28e5015e412ac631-Photoroom.png',a:["11","23","35","47","59","71","83","95"]},{n:'KAMBING',u:'https://i.postimg.cc/tJhQWMNW/25cba09984349edc203468f9d062bb77-Photoroom.png',a:["12","24","36","48","60","72","84","96"]},{n:'KUDA',u:'https://i.postimg.cc/MKDgwRs5/49858cc15abf0f6cb87d5acf1df06753-Photoroom.png',a:["01","13","25","37","49","61","73","85","97"]}];
+
+        // Array Pantun Kemenangan
+        const pantunList = [
+            "Pergi ke pasar membeli mangga,<br>Pulang ke rumah makan dengan gembira.<br>Jackpot besar sudah di tangan kita,<br>Hidup bahagia tiada duanya.",
+            "Burung merpati terbang ke angkasa,<br>Hinggap di dahan pohon jati.<br>Rezeki nomplok tiada terkira,<br>Bermain di sini untung pasti.",
+            "Jalan-jalan ke kota Medan,<br>Membeli oleh-oleh kue bika.<br>Jackpot menanti di tangan anda,<br>Raih kemenangan di Citawin pasti.",
+            "Buah kelapa di galah memanjat,<br>Sediakan pinang sebatang manusia.<br>Siapa yang rajin bermain di sini,<br>Menang besar dapat beribu-ribu.",
+            "Pohon mangga berbuah lebat,<br>Ditebang orang tua dan tua.<br>Jika kalian ingin menang besar,<br>Mainkan permainan ini tiap saat.",
+            "Anak ayam turun sepuluh,<br>Mati satu tinggal sembilan.<br>Kemenangan menghampiri dirimu,<br>Jackpot besar siapa yang menyangka.",
+            "Dari mana datangnya angin,<br>Dari hutan turun ke sungai.<br>Kemenangan akan kau raih,<br>Dari bermain di Citawin.",
+            "Minum teh hangat pagi hari,<br>Ditemani kue pisang goreng.<br>Kemenangan besar menantimu,<br>Buktikan sendiri main sekarang.",
+            "Bulan purnama terang bersinar,<br>Menerangi jalan di malam hari.<br>Siapa yang main dengan percaya diri,<br>Jackpot milikmu tanpa berkata.",
+            "Buah durian berduri-duri,<br>Diambil isinya manis rasanya.<br>Jika kalian ingin menang terus,<br>Mainkan permainan ini dengan yakin."
+        ];
+        let currentPantunIndex = 0;
+
+        function initSyair() { 
+            const t = new Date(); 
+            document.getElementById('syair_currentDate').innerText = t.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); 
+            document.getElementById('syair_locationsList').innerHTML = `<span>${['POIPET','NEVADA','BRUNEI'][Math.floor(Math.random()*3)]}</span>`; 
+            if(sInt) clearInterval(sInt); 
+            sInt = setInterval(randS, 1000); 
+            randShio();
+            changePantun(); // Load initial pantun
+        }
+        
+        function changePantun() {
+            const display = document.getElementById('syair_pantunDisplay');
+            // Randomize pantun
+            const randomIndex = Math.floor(Math.random() * pantunList.length);
+            display.innerHTML = pantunList[randomIndex];
+            
+            // Simple fade effect
+            display.style.opacity = 0;
+            setTimeout(() => {
+                display.style.transition = "opacity 0.5s";
+                display.style.opacity = 1;
+            }, 100);
+        }
+
         let cS = null, aI = 0;
         function randShio() { const s = sd[Math.floor(Math.random() * sd.length)]; cS = s; aI = 0; document.getElementById("syair_shioName").innerText = s.name; document.getElementById("syair_shioImage").style.backgroundImage = `url(${s.u})`; document.getElementById("syair_shioAngkaTengah").innerText = s.a[0]; }
         function randS() { if (cS) { aI = (aI + 1) % cS.a.length; document.getElementById("syair_shioAngkaTengah").innerText = cS.a[aI]; } document.getElementById("syair_numTop").innerText = Math.floor(Math.random()*10); document.getElementById("syair_numBottom").innerText = Math.floor(Math.random()*10); document.getElementById("syair_numLeft").innerText = Math.floor(Math.random()*10); document.getElementById("syair_numRight").innerText = Math.floor(Math.random()*10); let n = ''; for(let i=0; i<7; i++) n += Math.floor(Math.random()*10); document.getElementById('syair_bbfsNumbers').innerText = n; document.getElementById('syair_bebasNumbers').innerText = `${Math.floor(Math.random()*10)}/${Math.floor(Math.random()*10)}`; }
         function updateSyairContent() { const u = document.getElementById('syair_inputShioUrl').value; const l = document.getElementById('syair_inputLinkUrl').value; if (u) { document.getElementById('syair_shioImage').style.backgroundImage = `url('${u}')`; document.getElementById('syair_shioName').innerText = "KUSTOM"; } if (l) { document.getElementById('syair_targetLink').innerText = l; document.getElementById('syair_targetLink').href = l; } showNotification('Update!'); }
 
         // =========================================
-        // TOOL 5: LIVE DRAW (UPDATED JS)
+        // TOOL 5: LIVE DRAW (PERMANENT STORAGE FIX)
         // =========================================
-        let ld_markets = [
+        
+        const LD_STORAGE_KEY = 'citawin_ld_v4_perm'; // Key baru agar fresh
+        
+        // Default Data
+        const ld_defaultMarkets = [
             {id: 1, name: 'HOKIDRAW', url: 'https://hokidraw.com/live-draw.html', icon: '🎰', type: 'emoji'},
             {id: 2, name: 'CHELSEA', url: 'https://chelseapools.co.uk/draw-result.html', icon: '⚽', type: 'emoji'},
             {id: 3, name: 'POIPET', url: 'https://poipetlottery.com/liveresult', icon: '🎲', type: 'emoji'},
             {id: 4, name: 'BANGKOK', url: 'https://bangkokpoolstoday.com/drawResult.html', icon: '🏙️', type: 'emoji'},
             {id: 5, name: 'TOTOCAMBODIA', url: 'https://totocambodialive.com/live-draw.html', icon: '🦁', type: 'emoji'},
         ];
+
+        let ld_markets = [];
         let ld_activeMarket = null;
         let ld_selectedIcon = null;
-        let ld_tempImage = null; // Untuk menyimpan sementara gambar upload
+        let ld_tempImage = null; 
         let ld_iconTargetId = null;
         let ld_sidebarVisible = true;
 
         const ld_emojis = ['🎰','🎲','🎯','⚽','🏀','🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮','🐷','🐸','🐙','🦑','🦈','🐬','🐳','🌻','🌸','🌺','🍀','🍁','🍂','🍄','🌈','⭐','🌟','✨','💫','🌙','☀️','🔥','💧','💎','💍','👑','🎩','🧢'];
 
-        // Init on load
-        window.addEventListener('load', () => {
-            ld_loadData();
-            ld_renderList();
-            ld_generateEmojiGrids();
-        });
+        // 1. Load Data SEGERA (Self-Executing Function)
+        (function ld_initLoad() {
+            try {
+                const saved = localStorage.getItem(LD_STORAGE_KEY);
+                if (saved) {
+                    ld_markets = JSON.parse(saved);
+                } else {
+                    ld_markets = [...ld_defaultMarkets];
+                    localStorage.setItem(LD_STORAGE_KEY, JSON.stringify(ld_markets));
+                }
+            } catch (e) {
+                console.error("Error loading LD data", e);
+                ld_markets = [...ld_defaultMarkets];
+            }
+        })();
 
-        function ld_loadData() {
-            const saved = localStorage.getItem('ld_markets_v2');
-            if(saved) ld_markets = JSON.parse(saved);
-        }
         function ld_saveData() {
-            localStorage.setItem('ld_markets_v2', JSON.stringify(ld_markets));
+            try {
+                localStorage.setItem(LD_STORAGE_KEY, JSON.stringify(ld_markets));
+            } catch(e) {
+                alert("Gagal menyimpan! LocalStorage penuh atau error.");
+                console.error(e);
+            }
         }
 
         function ld_renderList() {
@@ -1111,7 +1209,6 @@
                 const div = document.createElement('div');
                 div.className = 'market-item-ld' + (ld_activeMarket === m.id ? ' active-ld' : '');
                 
-                // Icon handling
                 let iconHtml = '';
                 if(m.type === 'image') {
                     iconHtml = `<img src="${m.icon}" alt="${m.name}">`;
@@ -1166,17 +1263,15 @@
         // Modal Controls
         function ld_openModal(id) { 
             document.getElementById(id).style.display = 'flex'; 
-            ld_tempImage = null; // Reset temp image
+            ld_tempImage = null; 
             document.getElementById('ld_previewAddImg').style.display = 'none';
             document.getElementById('ld_previewEditImg').style.display = 'none';
         }
         function ld_closeModal(id) { 
             document.getElementById(id).style.display = 'none'; 
             ld_selectedIcon = null;
-            // Clear file inputs
             document.getElementById('ld_fileInputAdd').value = '';
             document.getElementById('ld_fileInputEdit').value = '';
-            // Clear emoji selection
             document.querySelectorAll('.ld-emoji-item.selected-ld').forEach(e => e.classList.remove('selected-ld'));
         }
 
@@ -1189,14 +1284,12 @@
         }
 
         function ld_pickEmoji(el, emoji) {
-            // Reset selection
             const parent = el.parentElement;
             parent.querySelectorAll('.ld-emoji-item').forEach(i => i.classList.remove('selected-ld'));
             el.classList.add('selected-ld');
             ld_selectedIcon = emoji;
-            ld_tempImage = null; // Prioritaskan emoji jika dipilih setelah upload
+            ld_tempImage = null; 
             
-            // Sembunyikan preview upload jika emoji dipilih
             const previewAdd = document.getElementById('ld_previewAddImg');
             const previewEdit = document.getElementById('ld_previewEditImg');
             if(previewAdd) previewAdd.style.display = 'none';
@@ -1212,7 +1305,6 @@
                     img.src = e.target.result;
                     img.style.display = 'block';
                     ld_tempImage = e.target.result;
-                    // Reset emoji selection
                     document.querySelectorAll('#ld_emojiGridAdd .ld-emoji-item.selected-ld').forEach(i => i.classList.remove('selected-ld'));
                     ld_selectedIcon = null;
                 }
@@ -1228,7 +1320,6 @@
                     img.src = e.target.result;
                     img.style.display = 'block';
                     ld_tempImage = e.target.result;
-                    // Reset emoji selection
                     document.querySelectorAll('#ld_emojiGridEdit .ld-emoji-item.selected-ld').forEach(i => i.classList.remove('selected-ld'));
                     ld_selectedIcon = null;
                 }
@@ -1253,7 +1344,7 @@
             };
 
             ld_markets.push(newMarket);
-            ld_saveData();
+            ld_saveData(); // Save immediately
             ld_renderList();
             ld_closeModal('ld_addModal');
             document.getElementById('ld_inputNama').value = '';
@@ -1268,7 +1359,7 @@
                     document.getElementById('ld_liveFrame').src = '';
                     document.getElementById('ld_displayMarket').innerText = 'Pilih Pasaran';
                 }
-                ld_saveData();
+                ld_saveData(); // Save immediately
                 ld_renderList();
             }
         }
@@ -1290,7 +1381,7 @@
                 m.type = 'emoji';
             }
             
-            ld_saveData();
+            ld_saveData(); // Save immediately
             ld_renderList();
             ld_closeModal('ld_iconModal');
         }
@@ -1302,7 +1393,7 @@
             
             const m = ld_markets.find(x => x.id === ld_activeMarket);
             m.url = newLink;
-            ld_saveData();
+            ld_saveData(); // Save immediately
             
             document.getElementById('ld_liveFrame').src = newLink;
             document.getElementById('ld_loading').classList.remove('hidden-ld');
@@ -1365,7 +1456,10 @@
             initSyair();
             generateJackpot();
             rep_load();
-            // Live Draw init is inside its own IIFE or global event listener above
+            
+            // Initialize Live Draw
+            ld_generateEmojiGrids();
+            ld_renderList();
         };
     </script>
 </body>
